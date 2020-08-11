@@ -50,7 +50,6 @@ document.getElementById('submit').addEventListener('click', function(e) {
 
     fetch(`/api/v1/forecast?city=${city}&days=${days}`).then((response) => {
         return response.json().then(body => {
-            console.log(body);
             if (response.status === 200) {
                 return body;
             } else {
@@ -80,8 +79,6 @@ function drawChart(d) {
     var options = {
         height: 500,
         legend: {position: 'top'},
-        //chart: { subtitle: 'money spent in distance travelled' },
-        //bar: { groupWidth: "20%" },
         series: {
             0: {axis: 'temperature'},
             1: {axis: 'humidity'}
@@ -89,11 +86,7 @@ function drawChart(d) {
         axes: {
             x: {
                 0: {side: 'bottom'}
-            },
-            //y: {
-            //    temperature: {label: 'Temperature'},
-            //    humidity: {side: 'right', label: 'Humidity'}
-            //}
+            }
         }
     };
 
