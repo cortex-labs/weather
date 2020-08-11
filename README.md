@@ -11,9 +11,15 @@ city and period of time.
 
 Clone this repo and execute the bootstrap script to get started:
 
-$ SECRET_KEY=<insert secret key> bin/bootstrap.sh
+    $ SECRET_KEY=<insert secret key> bin/bootstrap.sh
 
-This will
+This will run through the following steps:
+
+1. Create a Python virtual environment
+2. Activate the newly created virtual environment
+3. Install requirements from requirements.txt
+4. Create and run migrations
+5. Load fixtures from core/fixtures/cities.json (this may take a while)
 
 ## Development
 
