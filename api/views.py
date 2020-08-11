@@ -24,13 +24,13 @@ def forecast(request):
     # Fetch (lat, lon) for given city.
     try:
         city = City.objects.get(name=request.GET['city'])
-    except City.DoesNotExist:
-        return JsonResponse(
-            {'message': 'City "{}" could not be found'.format(request.GET['city'])}, status=400)
     except City.MultipleObjectsReturned:
         # XXX: Unfortunately the data we're using contains what appears to be
         # duplicates. Use the first result as a workaround for now.
         city = City.objects.filter(name=request.GET['city']).first()
+    except City.DoesNotExist:
+        return JsonResponse(
+            {'message': 'City "{}" could not be found'.format(request.GET['city'])}, status=400)
 
     # Get weather for the given city.
     city = Place(city.name, city.lat, city.lon)
