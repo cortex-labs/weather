@@ -25,6 +25,6 @@ This will run through the following steps:
 
 Execute this command run the Django development server:
 
-SECRET_KEY=<insert secret key> python3 manage.py runserver
+    $ SECRET_KEY=<insert secret key> python3 manage.py runserver
 
 Go to http://localhost:8000
