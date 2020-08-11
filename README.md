@@ -23,7 +23,7 @@ This will run through the following steps:
 
 ## Development
 
-Execute this command run the Django development server:
+Execute this command to run the Django development server:
 
     $ SECRET_KEY=<insert secret key> python3 manage.py runserver
 
