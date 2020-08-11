@@ -1,0 +1,103 @@
+<title>Weather Forecast</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<style>
+#chart line {
+    stroke: transparent !important;
+}
+</style>
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart"><h3 class="text-center text-muted mb-0">Click submit to render chart.</h3></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    Forecast
+                </div>
+                <div class="card-body">
+                    <label>City</label>
+                    <input id="city" type="text" value="Cape Town" required class="form-control">
+                    <hr>
+                    <label>Days</label>
+                    <select id="days" class="form-control">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                    </select>
+                    <hr>
+                    <button id="submit" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </div>
+    <div>
+</div>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+document.getElementById('submit').addEventListener('click', function(e) {
+    var city = document.getElementById('city').value,
+        days = parseInt(document.getElementById('days').value, 10);
+
+    fetch(`/api/v1/forecast?city=${city}&days=${days}`).then((response) => {
+        return response.json().then(body => {
+            console.log(body);
+            if (response.status === 200) {
+                return body;
+            } else {
+                throw body;
+            }
+        });
+    }).then((data) => {
+        drawChart(data);
+    }).catch((error) => {
+        alert(error.message);
+    });
+});
+
+google.charts.load('current', {
+  packages:['bar']
+});
+
+function drawChart(d) {
+    var data = google.visualization.arrayToDataTable([
+        ['', 'Temperature', 'Humidity'],
+        ['min', d.temperature_min, d.humidity_min],
+        ['max', d.temperature_max, d.humidity_max],
+        ['avg', d.temperature_average, d.humidity_average],
+        ['median', d.temperature_median, d.humidity_median]
+    ]);
+
+    var options = {
+        height: 500,
+        legend: {position: 'top'},
+        //chart: { subtitle: 'money spent in distance travelled' },
+        //bar: { groupWidth: "20%" },
+        series: {
+            0: {axis: 'temperature'},
+            1: {axis: 'humidity'}
+        },
+        axes: {
+            x: {
+                0: {side: 'bottom'}
+            },
+            //y: {
+            //    temperature: {label: 'Temperature'},
+            //    humidity: {side: 'right', label: 'Humidity'}
+            //}
+        }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('chart'));
+    chart.draw(data, options);
+};
+</script>
